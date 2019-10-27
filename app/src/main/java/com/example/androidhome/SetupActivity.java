@@ -151,7 +151,7 @@ public class SetupActivity extends AppCompatActivity {
          } }
     });
 
-
+        //WIP
         db.collection("Users").document(UID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
