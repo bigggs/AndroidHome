@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">AndroidHome</string>
+    <string name="password_hint" />
+    <string name="Email_Hint" />
+    <string name="Login_Logo" />
+    <string name="android_home">Android Home</string>
+    <string name="Password_Hint" />
+    <string name="register">Register</string>
+    <string name="email_address">Email Address</string>
+    <string name="login">Login</string>
+    <string name="emailAddress">Email Address</string>
+    <string name="passwordHint">Password</string>
+    <string name="the_future_is_loading">The Future Is Loading</string>
+    <string name="loading_logo">Android Home</string>
+    <string name="earth_img">Earth</string>
+    <string name="loading_name">Android Home</string>
+    <string name="loading_gif">Loading</string>
+    <string name="action_db_lookup">Recent Activity</string>
+    <string name="action_logout_text">Logout</string>
+    <string name="reg_email">Email Address</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="reg_back_text">Already have an account?</string>
+    <string name="email_reg_address">Email Address</string>
+    <string name="pass1">Password</string>
+    <string name="pass2">Password</string>
+    <string name="action_options_text">Options</string>
+    <string name="submit_options">Submit</string>
+    <string name="optios_name">Name</string>
+    <string name="options_name" />
+    <string name="btn_options_submit">Submit</string>
+    <string name="light_1_string">Light One</string>
+    <string name="light_2_string">Light Two</string>
+    <string name="light_3_string">Light Three</string>
+    <string name="light_4_string">Light Four</string>
+
+</resources>
