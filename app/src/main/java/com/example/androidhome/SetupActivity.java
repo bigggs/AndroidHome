@@ -79,6 +79,20 @@ public class SetupActivity extends AppCompatActivity {
 
             avatar_img = findViewById(R.id.avatar_icon);
 
+        db.collection("Users").document(UID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    String name = task.getResult().getString("name");
+                    String image = task.getResult().getString("image");
+                    optionsName.setText(name);
+                }
+                else {
+                    Toast.makeText(SetupActivity.this, "Error", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
     avatar_img.setOnClickListener(new View.OnClickListener(){
 
         @Override
@@ -108,7 +122,9 @@ public class SetupActivity extends AppCompatActivity {
     optionsSubmit.setOnClickListener(new View.OnClickListener() {
                                          @Override
                                          public void onClick(View v) {
+
        final String name = optionsName.getText().toString();
+
        //user must have a name but avatar is optional
          if (!TextUtils.isEmpty(name)) {
           String ID = DBauth.getCurrentUser().getUid();
@@ -127,6 +143,7 @@ public class SetupActivity extends AppCompatActivity {
                     Map<String, Object> user = new HashMap<>();
                     user.put("name", name);
                     user.put("image", mainImage.toString());
+
 
 
                         db.collection("users").add(user).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -151,19 +168,8 @@ public class SetupActivity extends AppCompatActivity {
          } }
     });
 
-        //WIP
-        db.collection("Users").document(UID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    String name = task.getResult().getString("name");
-                    String image = task.getResult().getString("image");
-                }
-                else {
-                    Toast.makeText(SetupActivity.this, "Error", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
+
+
     }
                 //CODE FROM https://github.com/ArthurHub/Android-Image-Cropper
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

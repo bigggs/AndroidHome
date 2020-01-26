@@ -32,5 +32,6 @@
     <string name="light_2_string">Light Two</string>
     <string name="light_3_string">Light Three</string>
     <string name="light_4_string">Light Four</string>
+    <string name="settings1_string">Config</string>
 
 </resources>

@@ -16,10 +16,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SetupActivity"></activity>
+        <activity android:name=".SetupActivity">
+            android:screenOrientation="portrait"
+
+        </activity>
         <activity android:name=".LoadActivity" />
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".loadingActivity" />
+        <activity android:name=".RegisterActivity"
+            android:screenOrientation="portrait"
+
+        />
+        <activity android:name=".loadingActivity"
+            android:screenOrientation="portrait"
+        />
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait">

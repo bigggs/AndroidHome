@@ -13,10 +13,15 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -36,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnOff2;
     private Button btnOff3;
     private Button btnOff4;
+    private StorageReference mStorageRef;
 
     String userName;
 
@@ -43,6 +49,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
+        mStorageRef = FirebaseStorage.getInstance().getReference();
 
 
 
@@ -55,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         final DatabaseReference light_two_db = database.getReference("LIGHT_TWO");
         final DatabaseReference light_three_db = database.getReference("LIGHT_THREE");
         final DatabaseReference light_four_db = database.getReference("LIGHT_FOUR");
+
 
         btnLight1 = (Button) findViewById(R.id.light_btn);
         btnLight2 = (Button) findViewById(R.id.light_btn1);
@@ -166,8 +177,9 @@ public class MainActivity extends AppCompatActivity {
                 //TOOL BAR
                 mainToolbar = (Toolbar) findViewById(R.id.main_toolbar);
     welcomeText = (TextView) findViewById(R.id.welcome_text);
+        userName = "Leon";
 
-    welcomeText.setText("Welcome " + userName );
+   // welcomeText.setText("Welcome " + userName );
     setSupportActionBar(mainToolbar);
 
     getSupportActionBar().setTitle("Android Home");
@@ -224,4 +236,6 @@ public class MainActivity extends AppCompatActivity {
             //redirect to login
             sendToLogin();
     }
-}
+
+
+    }

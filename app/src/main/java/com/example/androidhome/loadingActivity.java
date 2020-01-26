@@ -18,18 +18,12 @@ public class loadingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_loading);
     }
 
-  //  @Override
- //   protected void onStart(){
-     //   super.onStart();
-     //   try {
-     //       sleep(3000);
-    //    }catch (InterruptedException e)
-    //    { e.printStackTrace();
-   //     }
+    @Override
+    protected void onStart(){
+        super.onStart();
 
-           // Intent sucessLogin = new Intent(loadingActivity.this, MainActivity.class);
-          //  startActivity(sucessLogin); //bring main screen
-     //       finish(); //not allow user to go back by pressing back button
+
+
         }
 
-/* } */
+ }
