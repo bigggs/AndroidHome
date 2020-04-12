@@ -76,16 +76,11 @@ public class RegisterActivity extends AppCompatActivity {
                         mAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-
                                 //Login
                                 if (task.isSuccessful()) {
-
-
                                     Intent intentSetup = new Intent (RegisterActivity.this, SetupActivity.class);
                                     startActivity(intentSetup);
                                             finish();
-
-
                                    // sendToMain();
                                 //ERRORS
                                 } else {
@@ -93,13 +88,10 @@ public class RegisterActivity extends AppCompatActivity {
                                     //Shows android error for each scenario
                                     Toast.makeText(RegisterActivity.this, "Error: " + errorLogin, LENGTH_LONG).show();
                                     reg_progress.setVisibility(View.INVISIBLE);
-
                                 }
                                 reg_progress.setVisibility(View.INVISIBLE);
-
                             }
                         });
-
 
                     } else {
                         Toast.makeText(RegisterActivity.this, "Error, Please re enter your desired information" , LENGTH_LONG).show();
