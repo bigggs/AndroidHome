@@ -15,11 +15,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -27,9 +32,11 @@ import static android.view.View.VISIBLE;
 
 public class MainActivity extends AppCompatActivity {
 
+
+
+
     private Toolbar mainToolbar;
     private FirebaseAuth mAuth;
-    private TextView welcomeText;
     //light buttons
     private Button btnLight1;
     private Button btnLight2;
@@ -51,12 +58,18 @@ public class MainActivity extends AppCompatActivity {
     private TextView custom3;
     private TextView custom4;
     private StorageReference mStorageRef;
-    String userName;
 
+
+
+    DatabaseReference lightRef;
+    DatabaseReference luxRef;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
         mStorageRef = FirebaseStorage.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
 
@@ -114,6 +127,12 @@ public class MainActivity extends AppCompatActivity {
         btnOff3 = (Button) findViewById(R.id.light_off2);
         btnOff4 = (Button) findViewById(R.id.light_off3);
 
+
+
+
+
+
+
         //LIGHT BUTTON ON/OFF 1
         //NOTE: Change length_short time
         btnLight1.setOnClickListener(new View.OnClickListener() {
@@ -123,8 +142,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getBaseContext(), "Light one activated",Toast.LENGTH_SHORT).show();
                      btnOff1.setVisibility(VISIBLE);
                      btnLight1.setVisibility(View.INVISIBLE);
-                luxOne.setProgress(100);
-                light_setting_one.setValue(100);
+
                      luxOne.setVisibility(VISIBLE);
                 custom1.setVisibility(VISIBLE);
 
@@ -138,8 +156,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getBaseContext(), "Light one deactivated",Toast.LENGTH_SHORT).show();
                 btnOff1.setVisibility(View.INVISIBLE);
                 btnLight1.setVisibility(VISIBLE);
-                luxOne.setProgress(0);
-                light_setting_one.setValue(0);
+
                 luxOne.setVisibility(View.INVISIBLE);
                 custom1.setVisibility(View.INVISIBLE);
 
@@ -156,8 +173,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getBaseContext(), "Light two activated",Toast.LENGTH_SHORT).show();
                 btnOff2.setVisibility(VISIBLE);
                 btnLight2.setVisibility(View.INVISIBLE);
-                luxTwo.setProgress(100);
-                light_setting_two.setValue(100);
+
                 luxTwo.setVisibility(VISIBLE);
                 custom2.setVisibility(VISIBLE);
 
@@ -170,8 +186,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getBaseContext(), "Light two deactivated",Toast.LENGTH_SHORT).show();
                 btnOff2.setVisibility(View.INVISIBLE);
                 btnLight2.setVisibility(VISIBLE);
-                luxTwo.setProgress(0);
-                light_setting_two.setValue(0);
+
                 luxTwo.setVisibility(View.INVISIBLE);
                 custom2.setVisibility(View.INVISIBLE);
 
@@ -187,8 +202,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getBaseContext(), "Light three activated",Toast.LENGTH_SHORT).show();
                 btnOff3.setVisibility(VISIBLE);
                 btnLight3.setVisibility(View.INVISIBLE);
-                luxThree.setProgress(100);
-                light_setting_three.setValue(100);
+
                 luxThree.setVisibility(VISIBLE);
                 custom3.setVisibility(VISIBLE);
 
@@ -202,8 +216,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getBaseContext(), "Light three deactivated",Toast.LENGTH_SHORT).show();
                 btnOff3.setVisibility(View.INVISIBLE);
                 btnLight3.setVisibility(VISIBLE);
-                luxThree.setProgress(0);
-                light_setting_three.setValue(0);
+
                 luxThree.setVisibility(View.INVISIBLE);
                 custom3.setVisibility(View.INVISIBLE);
 
@@ -217,8 +230,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getBaseContext(), "Light four activated",Toast.LENGTH_SHORT).show();
                 btnOff4.setVisibility(VISIBLE);
                 btnLight4.setVisibility(View.INVISIBLE);
-                luxFour.setProgress(100);
-                light_setting_four.setValue(100);
+
                 luxFour.setVisibility(VISIBLE);
                 custom4.setVisibility(VISIBLE);
 
@@ -233,22 +245,12 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getBaseContext(), "Light four deactivated",Toast.LENGTH_SHORT).show();
                 btnOff4.setVisibility(View.INVISIBLE);
                 btnLight4.setVisibility(VISIBLE);
-                luxFour.setProgress(0);
-                light_setting_four.setValue(0);
+
                 luxFour.setVisibility(View.INVISIBLE);
                 custom4.setVisibility(View.INVISIBLE);
 
             }
         });
-        //TESTING DB SEND STATE TO APP
-      //  if(light_one_db.toString().equals("0")){
-     //       btnOff1.setVisibility(VISIBLE);
-    //        btnLight1.setVisibility(View.INVISIBLE);
- //       }
-    //    else if(light_one_db.toString().equals("1")){
-   //         btnOff1.setVisibility(View.INVISIBLE);
-   //         btnLight1.setVisibility(VISIBLE);
-      //  }
 
 
                 //custom light settings
@@ -275,8 +277,9 @@ public class MainActivity extends AppCompatActivity {
         luxTwo.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress2, boolean fromUser) {
-                light_setting_two.setValue(progress2);
                 custom2.setText(progress2 + "%");
+
+                light_setting_two.setValue(progress2);
 
             }
 
@@ -293,8 +296,9 @@ public class MainActivity extends AppCompatActivity {
         luxThree.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress3, boolean fromUser) {
-                light_setting_three.setValue(progress3);
                 custom3.setText(progress3 + "%");
+
+                light_setting_three.setValue(progress3);
             }
 
             @Override
@@ -310,8 +314,9 @@ public class MainActivity extends AppCompatActivity {
         luxFour.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress4, boolean fromUser) {
-                light_setting_four.setValue(progress4);
                 custom4.setText(progress4 + "%");
+
+                light_setting_four.setValue(progress4);
             }
 
             @Override
@@ -326,16 +331,13 @@ public class MainActivity extends AppCompatActivity {
         });
                 //TOOL BAR
                 mainToolbar = (Toolbar) findViewById(R.id.main_toolbar);
-    welcomeText = (TextView) findViewById(R.id.welcome_text);
-        userName = "Leon";
 
-   // welcomeText.setText("Welcome " + userName );
+
     setSupportActionBar(mainToolbar);
 
     getSupportActionBar().setTitle("Android Home");
 
-    //FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-   // userName = user.getEmail();
+
     }
 
     //custom lights
@@ -343,7 +345,91 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart(){
         super.onStart();
+        //sync DB/APP states
+        //db connection
+        lightRef = FirebaseDatabase.getInstance().getReference();
+        lightRef.addValueEventListener(new ValueEventListener() {
+            Integer loadCount = 1;   //to stop interference with user decisions
 
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                while(loadCount == 1){
+                    String lightOneValue = dataSnapshot.child("LIGHT_ONE").getValue().toString();
+                    String lightTwoValue = dataSnapshot.child("LIGHT_TWO").getValue().toString();
+                    String lightThreeValue = dataSnapshot.child("LIGHT_THREE").getValue().toString();
+                    String lightFourValue = dataSnapshot.child("LIGHT_FOUR").getValue().toString();
+                    if (lightOneValue.equals("0")) {
+
+                        //change colour of buttons to match state
+                        btnOff1.setVisibility(VISIBLE);
+                        btnLight1.setVisibility(View.INVISIBLE);
+                        luxOne.setVisibility(VISIBLE);
+                        custom1.setVisibility(VISIBLE);
+                    }
+                    if (lightTwoValue.equals("0")) {
+
+                        btnOff2.setVisibility(VISIBLE);
+                        btnLight2.setVisibility(View.INVISIBLE);
+                        luxTwo.setVisibility(VISIBLE);
+                        custom2.setVisibility(VISIBLE);
+                    }
+                    if (lightThreeValue.equals("0")) {
+
+                        btnOff3.setVisibility(VISIBLE);
+                        btnLight3.setVisibility(View.INVISIBLE);
+                        luxThree.setVisibility(VISIBLE);
+                        custom3.setVisibility(VISIBLE);
+                    }
+                    if (lightFourValue.equals("0")) {
+
+                        btnOff4.setVisibility(VISIBLE);
+                        btnLight4.setVisibility(View.INVISIBLE);
+                        luxFour.setVisibility(VISIBLE);
+                        custom4.setVisibility(VISIBLE);
+                    }
+
+                    loadCount = 2;
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        //LUX state syncing
+        luxRef = FirebaseDatabase.getInstance().getReference();
+        luxRef.addValueEventListener(new ValueEventListener() {
+            Integer loadCount = 1;
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                while (loadCount == 1) {
+                    String luxOneValue = dataSnapshot.child("lux1").getValue().toString();
+                    String luxTwoValue = dataSnapshot.child("lux2").getValue().toString();
+                    String luxThreeValue = dataSnapshot.child("lux3").getValue().toString();
+                    String luxFourValue = dataSnapshot.child("lux4").getValue().toString();
+                    int result1 = Integer.parseInt(luxOneValue); //convert to int
+                    luxOne.setProgress(result1);
+                    custom1.setText(result1 +"%");
+                    int result2 = Integer.parseInt(luxTwoValue);
+                    luxOne.setProgress(result2);
+                    custom2.setText(result2 +"%");
+                    int result3 = Integer.parseInt(luxThreeValue);
+                    luxOne.setProgress(result3);
+                    custom3.setText(result3 +"%");
+                    int result4 = Integer.parseInt(luxFourValue);
+                    luxOne.setProgress(result4);
+                    custom4.setText(result4 +"%");
+                    loadCount = 2;
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
         FirebaseUser currentUser = FirebaseAuth.getInstance() .getCurrentUser();
         //if user is not logged in
         if(currentUser == null){

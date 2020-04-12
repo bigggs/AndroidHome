@@ -16,13 +16,15 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import static android.view.View.VISIBLE;
 
 public class heatingActivity extends AppCompatActivity {
 
@@ -37,6 +39,7 @@ public class heatingActivity extends AppCompatActivity {
     private TextView customMotorText;
     private Button homeButton;
 
+    DatabaseReference motorRef;
 
 
 
@@ -57,7 +60,7 @@ public class heatingActivity extends AppCompatActivity {
 
 
 
-
+        //find ids
         homeButton = (Button) findViewById(R.id.btnBack);
         btnMotor1 = (Button) findViewById(R.id.motor_ctrl0);
         btnMotor2 = (Button) findViewById(R.id.motor_ctrl1);
@@ -65,10 +68,11 @@ public class heatingActivity extends AppCompatActivity {
         btnMotor4 = (Button) findViewById(R.id.motor_ctrl3);
         customMotor = (SeekBar) findViewById(R.id.customAngle);
         customMotorText = (TextView) findViewById(R.id.customMotorText);
+        //OFF
         btnMotor1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                motorControl.setValue("0");
+                motorControl.setValue("0"); //send value to DB
                 Toast.makeText(getBaseContext(), "Heating turned OFF", Toast.LENGTH_SHORT).show();
                 btnMotor1.setBackgroundColor(getResources().getColor(android.R.color.white));
                 btnMotor1.setTextColor(getResources().getColor(android.R.color.black));
@@ -81,6 +85,7 @@ public class heatingActivity extends AppCompatActivity {
             }
 
     });
+        //60 DEGREES
         btnMotor2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,6 +102,7 @@ public class heatingActivity extends AppCompatActivity {
             }
 
         });
+        //120 DEGREES
         btnMotor3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,6 +119,7 @@ public class heatingActivity extends AppCompatActivity {
             }
 
         });
+        //180 DEGREES
         btnMotor4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,6 +142,15 @@ public class heatingActivity extends AppCompatActivity {
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                     customMotorText.setText(progress + "°");
                     motorControl.setValue(progress);
+                    //MAKE ALL STATES OFF WHEN CUSTOM BAR USED
+                    btnMotor1.setBackgroundColor(getResources().getColor(android.R.color.black));
+                    btnMotor1.setTextColor(getResources().getColor(android.R.color.white));
+                    btnMotor2.setBackgroundColor(getResources().getColor(android.R.color.black));
+                    btnMotor2.setTextColor(getResources().getColor(android.R.color.white));
+                    btnMotor3.setBackgroundColor(getResources().getColor(android.R.color.black));
+                    btnMotor3.setTextColor(getResources().getColor(android.R.color.white));
+                    btnMotor4.setBackgroundColor(getResources().getColor(android.R.color.black));
+                    btnMotor4.setTextColor(getResources().getColor(android.R.color.white));
 
                 }
 
@@ -159,7 +175,76 @@ public class heatingActivity extends AppCompatActivity {
     @Override
     protected void onStart(){
         super.onStart();
+        //sync DB/APP states
+        //db connection
+        motorRef = FirebaseDatabase.getInstance().getReference();
+        motorRef.addValueEventListener(new ValueEventListener() {
+            Integer loadCount = 1;   //to stop interference with user decisions
 
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                while(loadCount == 1){
+                    String motorValue = dataSnapshot.child("motor1").getValue().toString();
+                    int result = Integer.parseInt(motorValue);
+
+                    customMotor.setProgress(result);
+                    customMotorText.setText(result + "%");
+                    if (motorValue.equals("0")) {
+
+                        //change colour of buttons to match state
+                        btnMotor1.setBackgroundColor(getResources().getColor(android.R.color.white));
+                        btnMotor1.setTextColor(getResources().getColor(android.R.color.black));
+                        btnMotor2.setBackgroundColor(getResources().getColor(android.R.color.black));
+                        btnMotor2.setTextColor(getResources().getColor(android.R.color.white));
+                        btnMotor3.setBackgroundColor(getResources().getColor(android.R.color.black));
+                        btnMotor3.setTextColor(getResources().getColor(android.R.color.white));
+                        btnMotor4.setBackgroundColor(getResources().getColor(android.R.color.black));
+                        btnMotor4.setTextColor(getResources().getColor(android.R.color.white));
+                    }
+                    if (motorValue.equals("60")) {
+
+                        btnMotor2.setBackgroundColor(getResources().getColor(android.R.color.white));
+                        btnMotor2.setTextColor(getResources().getColor(android.R.color.black));
+                        btnMotor1.setBackgroundColor(getResources().getColor(android.R.color.black));
+                        btnMotor1.setTextColor(getResources().getColor(android.R.color.white));
+                        btnMotor3.setBackgroundColor(getResources().getColor(android.R.color.black));
+                        btnMotor3.setTextColor(getResources().getColor(android.R.color.white));
+                        btnMotor4.setBackgroundColor(getResources().getColor(android.R.color.black));
+                        btnMotor4.setTextColor(getResources().getColor(android.R.color.white));
+                    }
+                    if (motorValue.equals("120")) {
+
+                        btnMotor3.setBackgroundColor(getResources().getColor(android.R.color.white));
+                        btnMotor3.setTextColor(getResources().getColor(android.R.color.black));
+                        btnMotor1.setBackgroundColor(getResources().getColor(android.R.color.black));
+                        btnMotor1.setTextColor(getResources().getColor(android.R.color.white));
+                        btnMotor2.setBackgroundColor(getResources().getColor(android.R.color.black));
+                        btnMotor2.setTextColor(getResources().getColor(android.R.color.white));
+                        btnMotor4.setBackgroundColor(getResources().getColor(android.R.color.black));
+                        btnMotor4.setTextColor(getResources().getColor(android.R.color.white));
+                    }
+                    if (motorValue.equals("180")) {
+
+                        btnMotor4.setBackgroundColor(getResources().getColor(android.R.color.white));
+                        btnMotor4.setTextColor(getResources().getColor(android.R.color.black));
+                        btnMotor1.setBackgroundColor(getResources().getColor(android.R.color.black));
+                        btnMotor1.setTextColor(getResources().getColor(android.R.color.white));
+                        btnMotor3.setBackgroundColor(getResources().getColor(android.R.color.black));
+                        btnMotor3.setTextColor(getResources().getColor(android.R.color.white));
+                        btnMotor2.setBackgroundColor(getResources().getColor(android.R.color.black));
+                        btnMotor2.setTextColor(getResources().getColor(android.R.color.white));
+                    }
+
+                    loadCount = 2;
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
         FirebaseUser currentUser = FirebaseAuth.getInstance() .getCurrentUser();
         //if user is not logged in
         if(currentUser == null){
