@@ -15,7 +15,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -25,9 +27,18 @@ import com.google.firebase.database.FirebaseDatabase;
 
 
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Calendar;
 import static android.view.View.VISIBLE;
 
 public class MainActivity extends AppCompatActivity {
@@ -58,15 +69,38 @@ public class MainActivity extends AppCompatActivity {
     private TextView custom3;
     private TextView custom4;
     private StorageReference mStorageRef;
+    //events
+    private static final String LOG_DATE = "Date";
+    private static final String LOG_TIME = "Time";
+    private static final String LOG_CHANGE = "Change";
+
+    //users
+    private static final String LOG_NAME = "name";
+    private static final String LOG_IMAGE = "image";
+    private FirebaseAuth DBauth = FirebaseAuth.getInstance();
+    private String UID = DBauth.getCurrentUser().getUid();
+    public String change;
+
+    //calendar
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseFirestore db2 = FirebaseFirestore.getInstance();
 
 
+
+    //time and date
+    Date currentTime = Calendar.getInstance().getTime();
+    String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
 
     DatabaseReference lightRef;
     DatabaseReference luxRef;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+                //calendar
 
 
 
@@ -74,7 +108,6 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         settingsBtn = (Button) findViewById(R.id.settings1_btn);
-
         settingsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
 
 
 
@@ -145,7 +179,8 @@ public class MainActivity extends AppCompatActivity {
 
                      luxOne.setVisibility(VISIBLE);
                 custom1.setVisibility(VISIBLE);
-
+             change = "Light ONE on";
+             calendarAdd();
 
             }
         });
@@ -345,6 +380,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart(){
         super.onStart();
+
+
         //sync DB/APP states
         //db connection
         lightRef = FirebaseDatabase.getInstance().getReference();
@@ -359,6 +396,7 @@ public class MainActivity extends AppCompatActivity {
                     String lightThreeValue = dataSnapshot.child("LIGHT_THREE").getValue().toString();
                     String lightFourValue = dataSnapshot.child("LIGHT_FOUR").getValue().toString();
                     if (lightOneValue.equals("0")) {
+                        //Download data
 
                         //change colour of buttons to match state
                         btnOff1.setVisibility(VISIBLE);
@@ -444,7 +482,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sendToHeating(){
-        Intent heating = new Intent(MainActivity.this, heatingActivity.class);
+        Intent heating = new Intent(MainActivity.this, firstActivity.class);
         startActivity(heating); //bring up login screen
         finish(); //not allow user to go back by pressing back button
     }
@@ -481,6 +519,29 @@ public class MainActivity extends AppCompatActivity {
             //redirect to login
             sendToLogin();
     }
+    public void calendarAdd()
+    {
 
+        db2.collection("users").document(UID).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    String userName = task.getResult().getString("name");
+                    String userImage = task.getResult().getString("image");
+
+                    Map<String, Object> newAdd = new HashMap<>();
+                    newAdd.put(LOG_IMAGE, userImage);
+                    newAdd.put(LOG_NAME, userName);
+                    newAdd.put(LOG_DATE, currentDate);
+                    newAdd.put(LOG_TIME, currentTime);
+                    newAdd.put(LOG_CHANGE, change);
+                    db.collection("calendar").document().set(newAdd);
+
+
+                }
 
     }
+
+    });
+    }}

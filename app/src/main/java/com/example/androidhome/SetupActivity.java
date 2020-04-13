@@ -76,7 +76,6 @@ public class SetupActivity extends AppCompatActivity {
         optionsProgress = findViewById(R.id.options_progress);
         optionsName = findViewById(R.id.options_name);
         optionsSubmit = findViewById(R.id.btn_submit_options);
-
             avatar_img = findViewById(R.id.avatar_icon);
 
         db.collection("Users").document(UID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -127,35 +126,35 @@ public class SetupActivity extends AppCompatActivity {
 
        //user must have a name but avatar is optional
          if (!TextUtils.isEmpty(name)) {
-          String ID = DBauth.getCurrentUser().getUid();
+          final String ID = DBauth.getCurrentUser().getUid();
           optionsProgress.setVisibility(View.VISIBLE);
 
 
           //root of firebase storage
              StorageReference img_location = mStorageRef.child("Images").child(ID + ".jpg");
              img_location.putFile(mainImage).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                                                                                                           @Override
-                                                                                                           public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                 @Override
+                 public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                  //ERROR HANDLE IF SUBMIT FAIL
                  //Firebase code was outdated, found solution https://www.codeproject.com/Questions/1248011/What-do-I-use-instead-of-getdownloadurl-in-android
                   if (task.isSuccessful()) {
                     Task<Uri> download_uri = task.getResult().getStorage().getDownloadUrl();
-                    Map<String, Object> user = new HashMap<>();
-                    user.put("name", name);
-                    user.put("image", mainImage.toString());
+                    Map<String, Object> userMap = new HashMap<>();
+                    userMap.put("name", name);
+                    userMap.put("image", mainImage.toString());
+
+                        db.collection("users").document(ID).set(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
 
 
-
-                        db.collection("users").add(user).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                         @Override
-                         public void onSuccess(DocumentReference documentReference) {
                              Toast.makeText(SetupActivity.this, "Image Sucessfully Uploaded", Toast.LENGTH_LONG).show();
                              Intent intent = new Intent(SetupActivity.this, MainActivity.class);
                              startActivity(intent); //bring up main screen
                          }
                         }).addOnFailureListener(new OnFailureListener() {
-                                                                                                                               @Override
-                                                                                                                               public void onFailure(@NonNull Exception e) { Toast.makeText(SetupActivity.this, "Something went wrong" + e, Toast.LENGTH_LONG).show(); }
+                           @Override
+                         public void onFailure(@NonNull Exception e) { Toast.makeText(SetupActivity.this, "Something went wrong" + e, Toast.LENGTH_LONG).show(); }
                                                                                                                            });
 
                         optionsProgress.setVisibility(View.INVISIBLE);
