@@ -68,10 +68,10 @@ public class MainActivity extends AppCompatActivity {
     private TextView custom4;
     private StorageReference mStorageRef;
     //events
-    private static final String LOG_DATE = "Date";
-    private static final String LOG_TIME = "Time";
-    private static final String LOG_CHANGE = "Change";
-
+    private static final String LOG_DATE = "date";
+    private static final String LOG_TIME = "time";
+    private static final String LOG_CHANGE = "change";
+    private int id;
     //users
     private static final String LOG_NAME = "name";
     private static final String LOG_IMAGE = "image";
@@ -519,7 +519,6 @@ public class MainActivity extends AppCompatActivity {
     }
     public void calendarAdd()
     {
-
         db2.collection("users").document(UID).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -529,10 +528,11 @@ public class MainActivity extends AppCompatActivity {
                     String userImage = task.getResult().getString("image");
 
                     Map<String, Object> newAdd = new HashMap<>();
+                    String finalTime = currentTime.toString();
                     newAdd.put(LOG_IMAGE, userImage);
                     newAdd.put(LOG_NAME, userName);
                     newAdd.put(LOG_DATE, currentDate);
-                    newAdd.put(LOG_TIME, currentTime);
+                    newAdd.put(LOG_TIME, finalTime);
                     newAdd.put(LOG_CHANGE, change);
                     db.collection("calendar").document().set(newAdd);
 

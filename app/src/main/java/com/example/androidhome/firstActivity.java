@@ -2,11 +2,15 @@ package com.example.androidhome;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.net.Uri;
 import android.os.Bundle;
 
 
+import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,26 +23,35 @@ import com.glide.slider.library.slidertypes.TextSliderView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import static android.view.View.VISIBLE;
 
 public class firstActivity extends AppCompatActivity {
     //db sync
+
+
     private static final String KEY_NAME = "Name";
     private static final String KEY_IMAGE = "Image";
     private static final String KEY_DATE = "Date";
@@ -48,12 +61,21 @@ public class firstActivity extends AppCompatActivity {
     private TextView dataText;
 
     //image
-
-
+    private CircularImageView avatarImg;
+    private Uri mImageUri;
+    private StorageReference mStorageRef;
+    private DatabaseReference mDatabaseRef;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private static final String LOG_NAME = "name";
+    private static final String LOG_IMAGE = "image";
+    private FirebaseAuth DBauth = FirebaseAuth.getInstance();
+    private String UID = DBauth.getCurrentUser().getUid();
+    private FirebaseFirestore db2 = FirebaseFirestore.getInstance();
 
-    private DocumentReference noteRef = db.collection("calendar").document("Events");
+        //Calendar
+    private CollectionReference noteRef = db.collection("calendar");
+
     private SliderLayout mDemoSlider;
 
     DatabaseReference totalRef;
@@ -68,22 +90,35 @@ public class firstActivity extends AppCompatActivity {
     String luxFourValue;
     String ACvalue;
     String motorValue;
+
+    //recycler
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first);
 
+        //recycler
+        ArrayList<String> animalNames = new ArrayList<>();
+
+        animalNames.add("Horse");
+        animalNames.add("Cow");
+        animalNames.add("Camel");
+        animalNames.add("Sheep");
+        animalNames.add("Goat");
+
+
+
+
 
         //FIREBASE STORAGE
-
-
+        mStorageRef = FirebaseStorage.getInstance().getReference("Images");
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference("Images");
 
         //FIREBASE FIRESTORE
 
 
         dataText = (TextView) findViewById(R.id.text_view_data);
         mDemoSlider = findViewById(R.id.slider);
-
 
 
         ArrayList<String> listUrl = new ArrayList<>();
@@ -97,7 +132,6 @@ public class firstActivity extends AppCompatActivity {
 
         listUrl.add("https://www.handymancraftywoman.com/wp-content/uploads/2019/12/my-super-ha-feature-rac-3_v1.jpg");
         listName.add("Air Conditioning");
-
 
 
         RequestOptions requestOptions = new RequestOptions();
@@ -133,26 +167,46 @@ public class firstActivity extends AppCompatActivity {
         mDemoSlider.stopCyclingWhenTouch(false);
     }
 
+
+
+
+
+
+
+
     @Override
     protected void onStart() {
         super.onStart();
-            //download data from calendar
         noteRef.get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                String name = documentSnapshot.getString(KEY_NAME);
-                                String image = documentSnapshot.getString(KEY_IMAGE);
-                                String date = documentSnapshot.getString(KEY_DATE);
-                                String time = documentSnapshot.getString(KEY_TIME);
-                                String change = documentSnapshot.getString(KEY_CHANGE);
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
 
+                        String flowData = "";
+                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                            Note note = documentSnapshot.toObject(Note.class);
+                            String name = note.getName();
+                            String image = note.getImage();
+                            String date = note.getDate();
+                            String time = note.getTime();
+                            String change = note.getChange();
 
 
-                        dataText.setText(image + name + date + time + change);
+                            flowData += ( name + " " + date + " " + time + " " + change + "\n\n");
+
+                            dataText.setText(flowData);
+
+                        }
                     }
+
                 });
+
+
+
+
+
+
         //sync DB/APP states
         //db connection
         totalRef = FirebaseDatabase.getInstance().getReference();
@@ -161,7 +215,7 @@ public class firstActivity extends AppCompatActivity {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                while(loadCount == 1){
+                while (loadCount == 1) {
                     lightOneValue = dataSnapshot.child("LIGHT_ONE").getValue().toString();
                     lightTwoValue = dataSnapshot.child("LIGHT_TWO").getValue().toString();
                     lightThreeValue = dataSnapshot.child("LIGHT_THREE").getValue().toString();
@@ -177,33 +231,25 @@ public class firstActivity extends AppCompatActivity {
                     if (lightOneValue.equals("0")) {
 
                         lightOneValue = "On";
-                    }
-                    else
-                    {
+                    } else {
                         lightOneValue = "Off";
                     }
                     if (lightTwoValue.equals("0")) {
 
                         lightTwoValue = "On";
-                    }
-                    else
-                    {
+                    } else {
                         lightTwoValue = "Off";
                     }
                     if (lightThreeValue.equals("0")) {
 
                         lightThreeValue = "On";
-                    }
-                    else
-                    {
+                    } else {
                         lightThreeValue = "Off";
                     }
                     if (lightFourValue.equals("0")) {
 
                         lightFourValue = "On";
-                    }
-                    else
-                    {
+                    } else {
                         lightFourValue = "Off";
                     }
 
@@ -245,5 +291,19 @@ public class firstActivity extends AppCompatActivity {
 
     public void onPageScrollStateChanged(int state) {
 
+    }
+
+    public void collectID() {
+
+        db2.collection("users").document(UID).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            String userName = task.getResult().getString("name");
+                            String userImage = task.getResult().getString("image");
+                        }
+                    }
+                });
     }
 }
