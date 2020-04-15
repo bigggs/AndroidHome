@@ -41,5 +41,8 @@
     <string name="stringHome">Home</string>
     <string name="stringOn">ON</string>
     <string name="stringAc">Air Conditoning</string>
+    <string name="string_lights">Lights</string>
+    <string name="string_loading">Loading data.....</string>
+    <string name="stringLights">Lights</string>
 
 </resources>

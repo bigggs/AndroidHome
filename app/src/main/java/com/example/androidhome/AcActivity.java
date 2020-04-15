@@ -12,6 +12,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -19,9 +21,17 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AcActivity extends AppCompatActivity {
     private Button on_btn;
@@ -32,6 +42,33 @@ public class AcActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private TextView ACtext;
     DatabaseReference ACref;
+
+    //db calendar sync
+    private static final String LOG_DATE = "date";
+    private static final String LOG_TIME = "time";
+    private static final String LOG_CHANGE = "change";
+    private static final String LOG_SETTING = "setting";
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseFirestore db2 = FirebaseFirestore.getInstance();
+
+    //Time and date
+    Calendar c = Calendar.getInstance();
+    SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm a");
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yy");
+
+
+    String currentTime = timeFormat.format(c.getTime());
+    String currentDate = dateFormat.format(c.getTime());
+
+
+    private int id;
+    //users
+    private static final String LOG_NAME = "name";
+    private static final String LOG_IMAGE = "image";
+    private FirebaseAuth DBauth = FirebaseAuth.getInstance();
+    private String UID = DBauth.getCurrentUser().getUid();
+    public String change;
+    public String logSetting;
 
 
     @Override
@@ -62,6 +99,8 @@ public class AcActivity extends AppCompatActivity {
                on_btn.setTextColor(getResources().getColor(android.R.color.black));
                 off_btn.setBackgroundColor(getResources().getColor(android.R.color.black));
                 off_btn.setTextColor(getResources().getColor(android.R.color.white));
+                change = " on ";
+                calendarAdd();
 
             }
 
@@ -76,6 +115,8 @@ public class AcActivity extends AppCompatActivity {
                 off_btn.setTextColor(getResources().getColor(android.R.color.black));
                 on_btn.setBackgroundColor(getResources().getColor(android.R.color.black));
                 on_btn.setTextColor(getResources().getColor(android.R.color.white));
+                change = " off ";
+                calendarAdd();
 
 
             }
@@ -87,13 +128,19 @@ public class AcActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 int result = 70 - progress;
-                ACtext.setText(progress + "%");
+                //multiply to make 70x = 100x
+                //round to whole number
+                DecimalFormat df = new DecimalFormat("0");
+                Double hundieProgress = progress * 1.4285714285;
+
+                ACtext.setText(df.format(hundieProgress) + "%");
                 acControls.setValue(result);
                 on_btn.setBackgroundColor(getResources().getColor(android.R.color.black));
                 on_btn.setTextColor(getResources().getColor(android.R.color.white));
                 off_btn.setBackgroundColor(getResources().getColor(android.R.color.black));
                 off_btn.setTextColor(getResources().getColor(android.R.color.white));
-
+                String resultString = String.valueOf(progress);
+                logSetting = resultString;
             }
 
             @Override
@@ -153,6 +200,7 @@ public class AcActivity extends AppCompatActivity {
                         on_btn.setTextColor(getResources().getColor(android.R.color.black));
                         off_btn.setBackgroundColor(getResources().getColor(android.R.color.black));
                         off_btn.setTextColor(getResources().getColor(android.R.color.white));
+
                     }
                     if (ACvalue.equals("70")) {
 
@@ -160,6 +208,7 @@ public class AcActivity extends AppCompatActivity {
                         off_btn.setTextColor(getResources().getColor(android.R.color.black));
                         on_btn.setBackgroundColor(getResources().getColor(android.R.color.black));
                         on_btn.setTextColor(getResources().getColor(android.R.color.white));
+
                     }
 
                     loadCount = 2;
@@ -179,7 +228,32 @@ public class AcActivity extends AppCompatActivity {
             sendToLogin();
         }
     }
+    public void calendarAdd() {
+        db2.collection("users").document(UID).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            String userName = task.getResult().getString("name");
+                            String userImage = task.getResult().getString("image");
 
+                            Map<String, Object> newAdd = new HashMap<>();
+                            newAdd.put(LOG_IMAGE, userImage);
+                            newAdd.put(LOG_NAME, userName);
+                            newAdd.put(LOG_DATE, currentDate);
+                            newAdd.put(LOG_TIME, currentTime);
+                            newAdd.put(LOG_CHANGE, change);
+                            newAdd.put(LOG_SETTING, logSetting);
+                            db.collection("AClist").document().set(newAdd);
+
+                        }
+
+                    }
+
+                });
+
+
+    }
 
     }
 

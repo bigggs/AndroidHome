@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnOff4;
     private Button settingsBtn;
     private Button acBtn;
+    private Button calendarBtn;
 
     private SeekBar luxOne;
     private SeekBar luxTwo;
@@ -71,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String LOG_DATE = "date";
     private static final String LOG_TIME = "time";
     private static final String LOG_CHANGE = "change";
+    private static final String LOG_LUX = "lux";
+
     private int id;
     //users
     private static final String LOG_NAME = "name";
@@ -78,16 +81,22 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth DBauth = FirebaseAuth.getInstance();
     private String UID = DBauth.getCurrentUser().getUid();
     public String change;
+    public String lux;
 
     //calendar
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseFirestore db2 = FirebaseFirestore.getInstance();
 
+    Calendar c = Calendar.getInstance();
+    SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm a");
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yy");
 
 
     //time and date
-    Date currentTime = Calendar.getInstance().getTime();
-    String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+    String currentTime = timeFormat.format(c.getTime());
+    String currentDate = dateFormat.format(c.getTime());
+
+
 
     DatabaseReference lightRef;
     DatabaseReference luxRef;
@@ -96,17 +105,23 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-                //calendar
-
-
-
+            //initialise db
         mStorageRef = FirebaseStorage.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
 
+        //settings btn press
+
+        calendarBtn = (Button) findViewById(R.id.id_db);
+        calendarBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendToDB();
+            }
+        });
         settingsBtn = (Button) findViewById(R.id.settings1_btn);
         settingsBtn.setOnClickListener(new View.OnClickListener() {
+
+
             @Override
             public void onClick(View v) {
                 sendToHeating();
@@ -174,10 +189,9 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getBaseContext(), "Light one activated",Toast.LENGTH_SHORT).show();
                      btnOff1.setVisibility(VISIBLE);
                      btnLight1.setVisibility(View.INVISIBLE);
-
                      luxOne.setVisibility(VISIBLE);
                 custom1.setVisibility(VISIBLE);
-             change = "Light ONE on";
+             change = "light one on";
              calendarAdd();
 
             }
@@ -189,9 +203,11 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getBaseContext(), "Light one deactivated",Toast.LENGTH_SHORT).show();
                 btnOff1.setVisibility(View.INVISIBLE);
                 btnLight1.setVisibility(VISIBLE);
-
-                luxOne.setVisibility(View.INVISIBLE);
+               luxOne.setVisibility(View.INVISIBLE);
                 custom1.setVisibility(View.INVISIBLE);
+                change = "light one off";
+                calendarAdd();
+
 
             }
         });
@@ -206,9 +222,11 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getBaseContext(), "Light two activated",Toast.LENGTH_SHORT).show();
                 btnOff2.setVisibility(VISIBLE);
                 btnLight2.setVisibility(View.INVISIBLE);
-
                 luxTwo.setVisibility(VISIBLE);
                 custom2.setVisibility(VISIBLE);
+                change = "light two on";
+                calendarAdd();
+
 
             }
         });
@@ -219,9 +237,11 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getBaseContext(), "Light two deactivated",Toast.LENGTH_SHORT).show();
                 btnOff2.setVisibility(View.INVISIBLE);
                 btnLight2.setVisibility(VISIBLE);
-
                 luxTwo.setVisibility(View.INVISIBLE);
                 custom2.setVisibility(View.INVISIBLE);
+                change = "light two off";
+                calendarAdd();
+
 
             }
         });
@@ -235,9 +255,11 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getBaseContext(), "Light three activated",Toast.LENGTH_SHORT).show();
                 btnOff3.setVisibility(VISIBLE);
                 btnLight3.setVisibility(View.INVISIBLE);
-
                 luxThree.setVisibility(VISIBLE);
                 custom3.setVisibility(VISIBLE);
+                change = "light three on";
+                calendarAdd();
+
 
 
             }
@@ -249,9 +271,11 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getBaseContext(), "Light three deactivated",Toast.LENGTH_SHORT).show();
                 btnOff3.setVisibility(View.INVISIBLE);
                 btnLight3.setVisibility(VISIBLE);
-
                 luxThree.setVisibility(View.INVISIBLE);
                 custom3.setVisibility(View.INVISIBLE);
+                change = "light three off";
+                calendarAdd();
+
 
             }
         });
@@ -263,9 +287,11 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getBaseContext(), "Light four activated",Toast.LENGTH_SHORT).show();
                 btnOff4.setVisibility(VISIBLE);
                 btnLight4.setVisibility(View.INVISIBLE);
-
                 luxFour.setVisibility(VISIBLE);
                 custom4.setVisibility(VISIBLE);
+                change = "light four on";
+                calendarAdd();
+
 
 
 
@@ -278,9 +304,11 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getBaseContext(), "Light four deactivated",Toast.LENGTH_SHORT).show();
                 btnOff4.setVisibility(View.INVISIBLE);
                 btnLight4.setVisibility(VISIBLE);
-
                 luxFour.setVisibility(View.INVISIBLE);
                 custom4.setVisibility(View.INVISIBLE);
+                change = "light four off";
+                calendarAdd();
+
 
             }
         });
@@ -291,8 +319,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress1, boolean fromUser) {
                 custom1.setText(progress1 + "%");
-
                 light_setting_one.setValue(progress1);
+                change = "light one to";
+
+
 
             }
 
@@ -311,8 +341,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress2, boolean fromUser) {
                 custom2.setText(progress2 + "%");
-
                 light_setting_two.setValue(progress2);
+                change = "light two to";
 
             }
 
@@ -330,8 +360,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress3, boolean fromUser) {
                 custom3.setText(progress3 + "%");
-
                 light_setting_three.setValue(progress3);
+                change = "light three to";
+                lux = String.valueOf(progress3);
             }
 
             @Override
@@ -348,8 +379,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress4, boolean fromUser) {
                 custom4.setText(progress4 + "%");
-
                 light_setting_four.setValue(progress4);
+                change = "light four to";
+                lux = String.valueOf(progress4);
             }
 
             @Override
@@ -449,6 +481,8 @@ public class MainActivity extends AppCompatActivity {
                     int result1 = Integer.parseInt(luxOneValue); //convert to int
                     luxOne.setProgress(result1);
                     custom1.setText(result1 +"%");
+                    lux = String.valueOf(result1);
+                    calendarAdd();
                     int result2 = Integer.parseInt(luxTwoValue);
                     luxOne.setProgress(result2);
                     custom2.setText(result2 +"%");
@@ -480,9 +514,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sendToHeating(){
-        Intent heating = new Intent(MainActivity.this, firstActivity.class);
+        Intent heating = new Intent(MainActivity.this, heatingActivity.class);
         startActivity(heating); //bring up login screen
         finish(); //not allow user to go back by pressing back button
+    }
+    public void sendToDB(){
+        Intent calendarpage = new Intent(MainActivity.this, firstActivity.class);
+        startActivity(calendarpage); //bring up calendar
     }
 
     @Override
@@ -528,13 +566,14 @@ public class MainActivity extends AppCompatActivity {
                     String userImage = task.getResult().getString("image");
 
                     Map<String, Object> newAdd = new HashMap<>();
-                    String finalTime = currentTime.toString();
                     newAdd.put(LOG_IMAGE, userImage);
                     newAdd.put(LOG_NAME, userName);
                     newAdd.put(LOG_DATE, currentDate);
-                    newAdd.put(LOG_TIME, finalTime);
+                    newAdd.put(LOG_TIME, currentTime);
                     newAdd.put(LOG_CHANGE, change);
-                    db.collection("calendar").document().set(newAdd);
+                    newAdd.put(LOG_LUX, lux);
+
+                    db.collection("Lightlist").document().set(newAdd);
 
                 }
 

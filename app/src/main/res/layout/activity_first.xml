@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorAccent"
     tools:context=".firstActivity">
 
     <com.glide.slider.library.SliderLayout
@@ -12,51 +13,114 @@
         android:layout_height="123dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="0dp"
         android:layout_marginTop="2dp"
         android:layout_marginBottom="531dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
 
     </com.glide.slider.library.SliderLayout>
 
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="123dp">
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </TableLayout>
 
     <TextView
-        android:id="@+id/text_view_data"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="130dp"
-        android:layout_marginEnd="376dp"
-        android:layout_marginBottom="428dp"
+        android:id="@+id/textnameid"
+        android:layout_width="139dp"
+        android:layout_height="56dp"
+        android:text="@string/stringLights"
+        android:textAlignment="center"
+        android:textColor="@color/avatar_icon_image_background"
+        android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/slider"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ScrollView
+        android:id="@+id/scroll2"
+        android:layout_width="243dp"
+        android:layout_height="423dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.789"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textnameid"
+        app:layout_constraintVertical_bias="0.733">
+
+        <TextView
+            android:id="@+id/text_view_AC"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/avatar_icon_image_background"
+            android:visibility="invisible" />
 
 
-</RelativeLayout>
+    </ScrollView>
+
+    <ScrollView
+        android:id="@+id/scroll1"
+        android:layout_width="243dp"
+        android:layout_height="423dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.789"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textnameid"
+        app:layout_constraintVertical_bias="0.733">
+
+        <TextView
+            android:id="@+id/text_view_heat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/avatar_icon_image_background"
+            android:visibility="invisible"
+            tools:visibility="invisible" />
+
+
+    </ScrollView>
+
+    <ScrollView
+        android:id="@+id/scroll3"
+        android:layout_width="243dp"
+        android:layout_height="423dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.789"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textnameid"
+        app:layout_constraintVertical_bias="0.733">
+
+        <TextView
+            android:id="@+id/text_view_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/string_loading"
+            android:textColor="@color/avatar_icon_image_background" />
+
+
+    </ScrollView>
+
+    <ImageButton
+        android:id="@+id/homebtn"
+        android:layout_width="78dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/colorAccent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/textnameid"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/slider"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@mipmap/back223_foreground" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
 
