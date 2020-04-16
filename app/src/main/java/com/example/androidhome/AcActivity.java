@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,7 +37,7 @@ import java.util.Map;
 public class AcActivity extends AppCompatActivity {
     private Button on_btn;
     private Button off_btn;
-    private Button home_btn;
+    private ImageButton home_btn;
     private SeekBar ac_controls;
     private StorageReference mStorageRef;
     private FirebaseAuth mAuth;
@@ -76,16 +77,16 @@ public class AcActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ac);
 
+
         mStorageRef = FirebaseStorage.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
         ACtext = (TextView) findViewById(R.id.customAC);
         on_btn = (Button) findViewById(R.id.btn_on);
 
         off_btn = (Button) findViewById(R.id.btn_off);
-        home_btn = (Button) findViewById(R.id.btn_home);
         ac_controls = (SeekBar) findViewById(R.id.AC_controls);
 
-
+        home_btn = (ImageButton) findViewById(R.id.btn_home);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference acControls = database.getReference("AC");
@@ -124,6 +125,7 @@ public class AcActivity extends AppCompatActivity {
         });
 
 
+
         ac_controls.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -135,10 +137,17 @@ public class AcActivity extends AppCompatActivity {
 
                 ACtext.setText(df.format(hundieProgress) + "%");
                 acControls.setValue(result);
-                on_btn.setBackgroundColor(getResources().getColor(android.R.color.black));
-                on_btn.setTextColor(getResources().getColor(android.R.color.white));
-                off_btn.setBackgroundColor(getResources().getColor(android.R.color.black));
-                off_btn.setTextColor(getResources().getColor(android.R.color.white));
+                if(progress == 0) {
+                    on_btn.setBackgroundColor(getResources().getColor(android.R.color.black));
+                    on_btn.setTextColor(getResources().getColor(android.R.color.white));
+                    off_btn.setBackgroundColor(getResources().getColor(android.R.color.black));
+                    off_btn.setTextColor(getResources().getColor(android.R.color.white));
+
+                }
+                else{
+                    off_btn.setBackgroundColor(getResources().getColor(android.R.color.black));
+                    off_btn.setTextColor(getResources().getColor(android.R.color.white));
+                }
                 String resultString = String.valueOf(progress);
                 logSetting = resultString;
             }
@@ -155,22 +164,23 @@ public class AcActivity extends AppCompatActivity {
         });
 
 
-        home_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendToHome();
-            }
-        });
+            home_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    sendToHome();
+                }
+            });
 
 
     }
+
     public void sendToLogin() {
         Intent intent = new Intent(AcActivity.this, LoginActivity.class);
         startActivity(intent); //bring up login screen
         finish(); //not allow user to go back by pressing back button
     }
     public void sendToHome(){
-      Intent intent = new Intent(AcActivity.this,MainActivity.class);
+      Intent intent = new Intent(AcActivity.this,portalActivity.class);
         startActivity(intent); //bring up login screen
         finish(); //not allow user to go back by pressing back button
    }
@@ -179,6 +189,7 @@ public class AcActivity extends AppCompatActivity {
     @Override
     protected void onStart(){
         super.onStart();
+        
         //sync DB/APP states
         //db connection
         ACref = FirebaseDatabase.getInstance().getReference();

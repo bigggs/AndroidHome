@@ -243,7 +243,6 @@ private String abc;
             @Override
             public void onPageSelected(int position) {
 
-                //heating
                     switch (position) {
                         case 0:
                             //lights

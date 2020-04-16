@@ -4,24 +4,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/aa111"
     tools:context=".AcActivity">
 
     <SeekBar
         android:id="@+id/AC_controls"
-        android:layout_width="313dp"
-        android:layout_height="59dp"
+        android:layout_width="331dp"
+        android:layout_height="16dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginBottom="163dp"
         android:max="70"
         android:min="0"
+        android:progressDrawable="@color/avatar_icon_image_background"
+
+        android:thumbTint="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.611" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_off" />
 
     <Button
         android:id="@+id/btn_on"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="128dp"
+        android:layout_height="73dp"
         android:layout_marginTop="156dp"
         android:background="@color/colorPrimaryDark"
         android:text="@string/stringOn"
@@ -30,13 +35,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.731" />
 
     <Button
         android:id="@+id/btn_off"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="128dp"
+        android:layout_height="73dp"
         android:layout_marginTop="16dp"
+        android:layout_marginBottom="18dp"
         android:background="@color/colorPrimaryDark"
         android:text="@string/motor_ctrl_string1"
         android:textColor="@color/colorAccent"
@@ -44,28 +51,28 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_on"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <Button
-        android:id="@+id/btn_home"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="125dp"
-        android:text="@string/stringHome"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/AC_controls"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_on" />
 
     <TextView
         android:id="@+id/customAC"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/btn_home"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/AC_controls" />
+
+    <ImageButton
+        android:id="@+id/btn_home"
+        android:layout_width="105dp"
+        android:layout_height="86dp"
+        android:layout_marginTop="216dp"
+        android:layout_marginEnd="272dp"
+        android:background="#00FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.117"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@mipmap/back2_foreground" />
 </androidx.constraintlayout.widget.ConstraintLayout>

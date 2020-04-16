@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".portalActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.glide.slider.library.SliderLayout
+                android:id="@+id/slider_lights"
+                android:layout_width="match_parent"
+                android:layout_height="123dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+
+                >
+
+
+            </com.glide.slider.library.SliderLayout>
+
+            <com.glide.slider.library.SliderLayout
+                android:id="@+id/slider_ac"
+                android:layout_width="match_parent"
+                android:layout_height="123dp"
+
+                >
+
+
+            </com.glide.slider.library.SliderLayout>
+
+            <com.glide.slider.library.SliderLayout
+                android:id="@+id/slider_heat"
+                android:layout_width="match_parent"
+                android:layout_height="123dp"
+
+                >
+
+            </com.glide.slider.library.SliderLayout>
+
+            <com.glide.slider.library.SliderLayout
+                android:id="@+id/slider_db"
+                android:layout_width="match_parent"
+                android:layout_height="123dp"
+
+                >
+
+            </com.glide.slider.library.SliderLayout>
+
+            <com.glide.slider.library.SliderLayout
+                android:id="@+id/slider_setup"
+                android:layout_width="match_parent"
+                android:layout_height="123dp"
+
+                tools:layout_editor_absoluteY="292dp">
+
+            </com.glide.slider.library.SliderLayout>
+
+            <com.glide.slider.library.SliderLayout
+                android:id="@+id/slider_logout"
+                android:layout_width="411dp"
+                android:layout_height="114dp"
+
+                ></com.glide.slider.library.SliderLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

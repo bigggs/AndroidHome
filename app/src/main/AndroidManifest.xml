@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".firstActivity"></activity>
+
+        <activity android:name=".firstActivity" />
         <activity android:name=".calendarActivity" />
         <activity android:name=".AcActivity" />
         <activity android:name=".SetupActivity" />
@@ -22,7 +23,7 @@
         <activity android:name=".loadingActivity" />
         <activity android:name=".heatingActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name=".portalActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,6 +37,9 @@
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
+        <activity android:name=".MainActivity">
+        </activity>
     </application>
+
 
 </manifest>

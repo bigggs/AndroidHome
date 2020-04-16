@@ -149,7 +149,7 @@ public class SetupActivity extends AppCompatActivity {
 
 
                              Toast.makeText(SetupActivity.this, "Image Sucessfully Uploaded", Toast.LENGTH_LONG).show();
-                             Intent intent = new Intent(SetupActivity.this, MainActivity.class);
+                             Intent intent = new Intent(SetupActivity.this, portalActivity.class);
                              startActivity(intent); //bring up main screen
                          }
                         }).addOnFailureListener(new OnFailureListener() {
@@ -164,7 +164,9 @@ public class SetupActivity extends AppCompatActivity {
 
              }
              );
-         } }
+         }
+
+                                         }
     });
 
 

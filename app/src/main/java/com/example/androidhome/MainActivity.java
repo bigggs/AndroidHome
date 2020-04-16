@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,9 +56,8 @@ public class MainActivity extends AppCompatActivity {
     private Button btnOff2;
     private Button btnOff3;
     private Button btnOff4;
-    private Button settingsBtn;
-    private Button acBtn;
-    private Button calendarBtn;
+    private ImageButton homeBtn;
+
 
     private SeekBar luxOne;
     private SeekBar luxTwo;
@@ -109,40 +109,6 @@ public class MainActivity extends AppCompatActivity {
         mStorageRef = FirebaseStorage.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
 
-        //settings btn press
-
-        calendarBtn = (Button) findViewById(R.id.id_db);
-        calendarBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendToDB();
-            }
-        });
-        settingsBtn = (Button) findViewById(R.id.settings1_btn);
-        settingsBtn.setOnClickListener(new View.OnClickListener() {
-
-
-            @Override
-            public void onClick(View v) {
-                sendToHeating();
-
-
-            }
-        });
-
-        acBtn = (Button) findViewById(R.id.ac_btn);
-        acBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent AC = new Intent(MainActivity.this, AcActivity.class);
-                startActivity(AC); //bring up AC
-
-            }
-        });
-
-
-
-
         //LIGHTS
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference light_one_db = database.getReference("LIGHT_ONE");
@@ -174,7 +140,14 @@ public class MainActivity extends AppCompatActivity {
         btnOff3 = (Button) findViewById(R.id.light_off2);
         btnOff4 = (Button) findViewById(R.id.light_off3);
 
+        homeBtn = (ImageButton) findViewById(R.id.btn_home);
 
+        homeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendToHome();
+            }
+        });
 
 
 
@@ -394,13 +367,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-                //TOOL BAR
-                mainToolbar = (Toolbar) findViewById(R.id.main_toolbar);
 
-
-    setSupportActionBar(mainToolbar);
-
-    getSupportActionBar().setTitle("Android Home");
 
 
     }
@@ -410,7 +377,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart(){
         super.onStart();
-
+        FirebaseUser currentUser = FirebaseAuth.getInstance() .getCurrentUser();
+        //if user is not logged in
+        if(currentUser == null){
+            sendToLogin();
+        }
 
         //sync DB/APP states
         //db connection
@@ -500,11 +471,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        FirebaseUser currentUser = FirebaseAuth.getInstance() .getCurrentUser();
-        //if user is not logged in
-        if(currentUser == null){
-            sendToLogin();
-        }
+
     }
 
     public void sendToLogin(){
@@ -512,49 +479,13 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent); //bring up login screen
             finish(); //not allow user to go back by pressing back button
     }
-
-    public void sendToHeating(){
-        Intent heating = new Intent(MainActivity.this, heatingActivity.class);
-        startActivity(heating); //bring up login screen
+    public void sendToHome(){
+        Intent homeIntent = new Intent(MainActivity.this, portalActivity.class);
+        startActivity(homeIntent); //bring up login screen
         finish(); //not allow user to go back by pressing back button
     }
-    public void sendToDB(){
-        Intent calendarpage = new Intent(MainActivity.this, firstActivity.class);
-        startActivity(calendarpage); //bring up calendar
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        getMenuInflater().inflate(R.menu.main_menu, menu);
 
 
-        return true;
-    }
-    //LOGOUT CODE
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()){
-                case R.id.action_logout:
-                    logout();
-                        return true;
-                case R.id.action_options:
-                    Intent optionIntent = new Intent(MainActivity.this, SetupActivity.class);
-                    startActivity(optionIntent);
-                case R.id.action_recent_activity:
-                    Intent settingsIntent = new Intent(MainActivity.this, SetupActivity.class);
-                    startActivity(settingsIntent);
-                default:
-                    return false;
-        }
-
-    }
-    private void logout(){
-        //firebase sign out
-            mAuth.signOut();
-            //redirect to login
-            sendToLogin();
-    }
     public void calendarAdd()
     {
         db2.collection("users").document(UID).get()
