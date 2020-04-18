@@ -12,11 +12,10 @@
         android:layout_width="198dp"
         android:layout_height="42dp"
         android:layout_marginStart="100dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="100dp"
         android:layout_marginBottom="8dp"
         android:background="#00FFFFFF"
-        android:contentDescription="@string/Login_Logo"
+                android:contentDescription="@string/Login_Logo"
         android:fontFamily="sans-serif-condensed-medium"
         android:text="@string/android_home"
         android:textAlignment="center"
@@ -24,9 +23,8 @@
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/login_email"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.461"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginProgress" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/login_email"
@@ -42,6 +40,8 @@
         android:inputType="textEmailAddress"
         android:textAlignment="center"
         android:textColor="@color/colorPrimaryDark"
+        android:textColorHighlight="@color/colorPrimaryDark"
+        android:textColorLink="@color/avatar_icon_image_background"
         app:layout_constraintBottom_toTopOf="@+id/login_password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.471"
@@ -62,6 +62,8 @@
         android:inputType="textPassword"
         android:textAlignment="center"
         android:textColor="@color/colorPrimaryDark"
+        android:textColorHighlight="@color/colorPrimaryDark"
+        android:textColorLink="@color/avatar_icon_image_background"
         app:layout_constraintBottom_toTopOf="@+id/login_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

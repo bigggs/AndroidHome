@@ -234,7 +234,7 @@ public class portalActivity extends AppCompatActivity {
             public void onPageSelected(int position) {
                 switch (position) {
                     case 0:
-                        sendToLogin();
+                        logout();
                         break;
                 }
             }

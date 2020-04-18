@@ -22,13 +22,13 @@
 
     <com.mikhaellopez.circularimageview.CircularImageView
         android:id="@+id/avatar_icon"
-        android:layout_width="165dp"
-        android:layout_height="157dp"
+        android:layout_width="170dp"
+        android:layout_height="155dp"
         android:layout_marginStart="123dp"
         android:layout_marginTop="76dp"
         android:layout_marginEnd="123dp"
         android:layout_marginBottom="160dp"
-        android:background="@android:drawable/sym_def_app_icon"
+        android:background="@mipmap/lighbg1_round"
         app:layout_constraintBottom_toTopOf="@+id/btn_submit_options"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -83,4 +83,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/setup_toolbar" />
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="105dp"
+        android:layout_height="86dp"
+        android:layout_marginTop="140dp"
+        android:layout_marginEnd="272dp"
+        android:background="#00FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/motor_ctrl0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@mipmap/back2_foreground" />
 </androidx.constraintlayout.widget.ConstraintLayout>

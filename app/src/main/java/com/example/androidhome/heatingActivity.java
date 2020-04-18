@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,7 +42,7 @@ public class heatingActivity extends AppCompatActivity {
     private Button btnMotor2;
     private Button btnMotor3;
     private Button btnMotor4;
-    private Button homeButton;
+    private ImageButton homeButton;
     //db
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseFirestore db2 = FirebaseFirestore.getInstance();
@@ -94,7 +95,7 @@ public class heatingActivity extends AppCompatActivity {
 
 
         //find ids
-        homeButton = (Button) findViewById(R.id.btnBack);
+        homeButton = (ImageButton) findViewById(R.id.btnBack);
         btnMotor1 = (Button) findViewById(R.id.motor_ctrl0);
         btnMotor2 = (Button) findViewById(R.id.motor_ctrl1);
         btnMotor3 = (Button) findViewById(R.id.motor_ctrl2);
@@ -311,7 +312,7 @@ public class heatingActivity extends AppCompatActivity {
     }
 
     public void sendToHome() {
-        Intent intent = new Intent(heatingActivity.this, MainActivity.class);
+        Intent intent = new Intent(heatingActivity.this, portalActivity.class);
         startActivity(intent); //bring up login screen
         finish(); //not allow user to go back by pressing back button
     }

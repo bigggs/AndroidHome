@@ -4,81 +4,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/a111111111"
     tools:context=".heatingActivity">
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/main_toolbar2"
-        android:layout_width="337dp"
-        android:layout_height="31dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="24dp"
-        android:background="@color/colorAccent"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/motor_ctrl0"
-        android:layout_width="125dp"
-        android:layout_height="65dp"
+        android:layout_width="110dp"
+        android:layout_height="56dp"
         android:layout_marginStart="44dp"
+        android:layout_marginTop="216dp"
         android:layout_marginEnd="220dp"
-        android:layout_marginBottom="44dp"
+        android:layout_marginBottom="18dp"
         android:background="#000000"
         android:text="@string/motor_ctrl_string1"
         android:textColor="@color/colorAccent"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/motor_ctrl2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.227"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.8" />
-
-    <Button
-        android:id="@+id/motor_ctrl1"
-        android:layout_width="125dp"
-        android:layout_height="65dp"
-        android:layout_marginStart="22dp"
-        android:layout_marginEnd="44dp"
-        android:layout_marginBottom="44dp"
-        android:background="@color/colorPrimaryDark"
-        android:text="@string/motor_ctrl_string2"
-        android:textColor="@color/colorAccent"
-        android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/motor_ctrl3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.93"
-        app:layout_constraintStart_toEndOf="@+id/motor_ctrl0"
-        app:layout_constraintTop_toTopOf="@+id/main_toolbar2"
-        app:layout_constraintVertical_bias="0.798" />
-
-    <Button
-        android:id="@+id/motor_ctrl2"
-        android:layout_width="125dp"
-        android:layout_height="65dp"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="204dp"
-        android:layout_marginEnd="220dp"
-        android:background="@color/colorPrimaryDark"
-        android:text="@string/motor_control_string3"
-        android:textColor="@color/colorAccent"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.227"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/motor_ctrl3"
-        android:layout_width="125dp"
-        android:layout_height="65dp"
+        android:layout_width="110dp"
+        android:layout_height="56dp"
         android:layout_marginStart="22dp"
-        android:layout_marginTop="204dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="44dp"
         android:background="@color/colorPrimaryDark"
         android:text="@string/motor_control_string4"
@@ -86,59 +38,85 @@
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.934"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/motor_ctrl2"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <SeekBar
-        android:id="@+id/customAngle"
-        android:layout_width="205dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="88dp"
-        android:layout_marginBottom="107dp"
-        android:background="?android:attr/panelBackground"
-        android:max="180"
+    <Button
+        android:id="@+id/motor_ctrl2"
+        android:layout_width="110dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="220dp"
+        android:background="@color/colorPrimaryDark"
+        android:text="@string/motor_control_string3"
+        android:textColor="@color/colorAccent"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/motor_ctrl2"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="105dp"
+        android:layout_height="86dp"
+        android:layout_marginTop="140dp"
+        android:layout_marginEnd="272dp"
+        android:background="#00FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/motor_ctrl0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@mipmap/back2_foreground" />
+
+    <Button
+        android:id="@+id/motor_ctrl1"
+        android:layout_width="110dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="216dp"
+        android:layout_marginEnd="44dp"
+        android:layout_marginBottom="18dp"
+        android:background="@color/colorPrimaryDark"
+        android:text="@string/motor_ctrl_string2"
+        android:textColor="@color/colorAccent"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/motor_ctrl3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/motor_ctrl0"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <SeekBar
+        android:id="@+id/customAngle"
+        android:layout_width="331dp"
+        android:layout_height="16dp"
+        android:layout_marginTop="7dp"
+        android:max="180"
+
+        android:progressDrawable="@color/avatar_icon_image_background"
+        android:thumbTint="@color/colorAccent"
+        app:layout_constraintBottom_toTopOf="@+id/motor_ctrl1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/customMotorText"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/customMotorText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
         android:text="@string/customMotorString"
-        app:layout_constraintBottom_toTopOf="@+id/customAngle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/motor_ctrl2"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="136dp"
-        android:text="Heating Control"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/motor_ctrl0"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/btnBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="43dp"
-        android:text="@string/stringHome"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/customAngle"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.307" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

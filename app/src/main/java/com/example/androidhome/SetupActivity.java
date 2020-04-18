@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -52,14 +53,23 @@ public class SetupActivity extends AppCompatActivity {
     private Uri download_uri;
     private StorageReference mStorageRef;
     private String UID;
+    private ImageButton homeButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup);
-
+        homeButton = (ImageButton) findViewById(R.id.btnBack);
         Toolbar setupToolbar = findViewById(R.id.setup_toolbar);
         setSupportActionBar(setupToolbar);
         getSupportActionBar().setTitle("Account Details");
+
+        homeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendToHome();
+            }
+        });
+
 
         //FIREBASE STORAGE
        DBauth = FirebaseAuth.getInstance();
@@ -124,8 +134,32 @@ public class SetupActivity extends AppCompatActivity {
 
        final String name = optionsName.getText().toString();
 
+                                             if(mainImage == null){
+                                                 final String ID = DBauth.getCurrentUser().getUid();
+                                                 optionsProgress.setVisibility(View.VISIBLE);
+                                                 //root of firebase storage
+
+
+                                                 Map<String, Object> userMap = new HashMap<>();
+                                                 userMap.put("name", name);
+                                                 db.collection("users").document(ID).set(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                     @Override
+                                                     public void onComplete(@NonNull Task<Void> task) {
+
+
+                                                         Toast.makeText(SetupActivity.this, "Name Sucessfully Uploaded", Toast.LENGTH_LONG).show();
+                                                         Intent intent = new Intent(SetupActivity.this, portalActivity.class);
+                                                         startActivity(intent); //bring up main screen
+                                                     }
+                                                 }).addOnFailureListener(new OnFailureListener() {
+                                                     @Override
+                                                     public void onFailure(@NonNull Exception e) { Toast.makeText(SetupActivity.this, "Something went wrong" + e, Toast.LENGTH_LONG).show(); }
+                                                 });
+
+                                                 optionsProgress.setVisibility(View.INVISIBLE);
+                                             }
        //user must have a name but avatar is optional
-         if (!TextUtils.isEmpty(name)) {
+         else if (!TextUtils.isEmpty(name)) {
           final String ID = DBauth.getCurrentUser().getUid();
           optionsProgress.setVisibility(View.VISIBLE);
 
@@ -165,13 +199,14 @@ public class SetupActivity extends AppCompatActivity {
              }
              );
          }
+ }
 
-                                         }
-    });
+                                                                                                                                          }
+             );
+         }
 
 
 
-    }
                 //CODE FROM https://github.com/ArthurHub/Android-Image-Cropper
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -188,5 +223,10 @@ public class SetupActivity extends AppCompatActivity {
                 Exception error = result.getError();
             }
         }
+    }
+    public void sendToHome() {
+        Intent intent = new Intent(SetupActivity.this, portalActivity.class);
+        startActivity(intent); //bring up login screen
+        finish(); //not allow user to go back by pressing back button
     }
 }
