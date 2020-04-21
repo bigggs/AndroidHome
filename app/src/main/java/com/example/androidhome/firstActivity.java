@@ -178,6 +178,7 @@ private String abc;
 
 
 
+
         //Slider
         mDemoSlider = findViewById(R.id.slider);
         ArrayList<String> listUrl = new ArrayList<>();

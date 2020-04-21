@@ -132,24 +132,11 @@
         android:inputType="textEmailAddress"
         android:textAlignment="center"
         android:textColor="@color/avatar_icon_image_background"
-        app:layout_constraintBottom_toTopOf="@+id/imageView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/reg_email" />
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="252dp"
-        android:layout_height="371dp"
-        android:layout_marginStart="76dp"
-        android:layout_marginEnd="76dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.428"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.983"
-        app:srcCompat="@mipmap/earthpic2" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,7 +15,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
-import javax.xml.datatype.Duration;
+
 
 public class portalActivity extends AppCompatActivity {
     //sliders
