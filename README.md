@@ -2,7 +2,10 @@
 
 <center>The Internet of Things is a rapidly evolving technology that has seen more consumer interest and use every year. For this project the developer had the aim of researching and documenting existing IoT smart-home services and applications and build an application and circuit that could provide similar functionality. The developer worked by using the Scrum framework within the Agile methodology, in which they developed increments and presented functionality and design to stakeholders who would then participate in questionnaires, and semi-structured interviews in order to define or remove requirements. The project artefact includes an Android application, a programmed microprocessor, and a cloud database.
 Android Home is an IoT Android Application that allows users to control appliances around their homes, for the purpose of demonstration a concept of proof has been created, using a microprocessor with WIFI capabilities. 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/BlOxk8engAw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<h1>
+  Video demonstration
+  </h1>
+  https://www.youtube.com/watch?v=BlOxk8engAw
 Microprocessor code: Ardyhome.ino
 <h1>How to Install Android Home</h1> 
 1) Download and the project into a folder<br>
