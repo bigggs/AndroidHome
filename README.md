@@ -8,6 +8,10 @@ Android Home is an IoT Android Application that allows users to control applianc
   https://www.youtube.com/watch?v=BlOxk8engAw<br>
 Microprocessor code: Ardyhome.ino
 <h1>How to Install Android Home</h1> 
+  <h2> Method one - Install APK file on your Android Phone </h2>
+ <br> 1) Download the APK file "Android Home" <br>
+  2) Open the APK file on your Android Home <br>
+  <h2> Method two - Run the app in Android Studio </h2>
 1) Download and the project into a folder<br>
 2) Open the project from Android Studio<br>
 3) Run the Android Emulator <br>
