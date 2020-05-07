@@ -1,9 +1,9 @@
 
 
-#define WIFI_SSID "Gang Internet 2"
-#define WIFI_PASSWORD "leonidas1"
-#define FIREBASE_HOST "androidhome-6ae71.firebaseio.com"
-#define FIREBASE_AUTH "uQx8eWsqfBoaCbpHA6AGm1H3BCmpMWA6LR13fhvo"
+#define WIFI_SSID "XXXXXXXXXX"
+#define WIFI_PASSWORD "XXXXXXXXXXXXXX"
+#define FIREBASE_HOST "XXXXXXX"
+#define FIREBASE_AUTH "XXXXXX"
 #include <ESP8266WiFi.h>                                                // esp8266 library
 #include <FirebaseArduino.h>                                             // firebase library
 #include <Servo.h>                                                      //motor library
